@@ -3,4 +3,5 @@ export interface ProductInterface {
   price: string;
   image: string;
   link: string;
+  rate: string;
 }

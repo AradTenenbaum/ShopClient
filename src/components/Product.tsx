@@ -25,13 +25,14 @@ function Product({ product }: { product: ProductInterface }) {
           <Typography gutterBottom variant="h5" component="div">
             {product.title}
           </Typography>
-          {product.price !== "" ? (
-            <Typography variant="body2" color="text.secondary">
-              Price: ${product.price}
-            </Typography>
-          ) : (
-            <div></div>
-          )}
+          <Typography variant="body2" color="text.secondary">
+            {product.price !== "" ? (
+              <div>Price: ${product.price}</div>
+            ) : (
+              <div></div>
+            )}
+            <div>Rate: ⭐{product.rate}</div>
+          </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
