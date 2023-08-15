@@ -7,22 +7,25 @@ import ProductList from "../components/ProductList";
 import { Alert, AlertColor, Snackbar } from "@mui/material";
 import LoadingCircle from "../components/LoadingCircle";
 import { addFavoriteApi } from "../api/user";
+import { ERROR, INFO, SUCCESS, WARNING } from "../utils/constants";
 
 const Store = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
-  const [severity, setSeverity] = useState("error");
+  const [severity, setSeverity] = useState(ERROR);
   const [message, setMessage] = useState("Success");
   const [isDisplayedLoading, setIsDisplayedLoading] = useState(false);
   const products = useSelector((state: RootState) => state.products);
   const user = useSelector((state: RootState) => state.user);
 
+  // Open the snack bar
   const openSnackBar = (status: string, message: string) => {
     setSeverity(status);
     setMessage(message);
     setOpen(true);
   };
 
+  // Close snackbar
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -34,17 +37,18 @@ const Store = () => {
     setOpen(false);
   };
 
+  // Click on favorite button
   const handleFavorite = async () => {
     if (!user) {
-      openSnackBar("error", "You have to login to use this feature");
+      openSnackBar(INFO, "You have to login to use this feature");
     } else if (searchTerm.length === 0) {
-      openSnackBar("error", "Write the category you wish to add to favorites");
+      openSnackBar(ERROR, "Write the category you wish to add to favorites");
     } else {
       const results = await addFavoriteApi(searchTerm, user.token);
       if (results.error) {
-        openSnackBar("error", results.error);
+        openSnackBar(ERROR, results.error);
       } else {
-        openSnackBar("success", results.message);
+        openSnackBar(SUCCESS, results.message);
       }
     }
   };
@@ -54,7 +58,12 @@ const Store = () => {
   async function searchData() {
     setIsDisplayedLoading(true);
     const productsRes = await getProductsApi(searchTerm);
-    dispatch(getProducts(productsRes));
+    if (productsRes.error) openSnackBar(ERROR, productsRes.error);
+    else if (productsRes.length === 0) {
+      openSnackBar(INFO, "No products for this search");
+    } else {
+      dispatch(getProducts(productsRes));
+    }
     setIsDisplayedLoading(false);
   }
 
@@ -73,7 +82,14 @@ const Store = () => {
             type="text"
             placeholder="Search products..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              if (e.target.value.length < 100) setSearchTerm(e.target.value);
+              else
+                openSnackBar(
+                  WARNING,
+                  "Cannot search with more than 100 characters"
+                );
+            }}
           />
           <button style={styles.searchButton} type="submit">
             Search

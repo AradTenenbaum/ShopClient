@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../redux/reducers";
+import { ERROR, SUCCESS } from "../utils/constants";
 
 const LoginRegister = () => {
   const [username, setUsername] = useState("");
@@ -34,12 +35,14 @@ const LoginRegister = () => {
     setOpen(true);
   };
 
+  // User needs to be unauthenticated to see this page
   useEffect(() => {
     if (user) {
       navigate("/");
     }
   }, []);
 
+  // Close snackbar
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -57,7 +60,7 @@ const LoginRegister = () => {
       if (isLogin) {
         const results = await loginApi(username, password);
         if (results.error) {
-          openSnackBar("error", results.error);
+          openSnackBar(ERROR, results.error);
         } else {
           dispatch(login({ username, token: results.token }));
           navigate("/");
@@ -65,9 +68,9 @@ const LoginRegister = () => {
       } else {
         const results = await registerApi(username, password);
         if (results.error) {
-          openSnackBar("error", results.error);
+          openSnackBar(ERROR, results.error);
         } else {
-          openSnackBar("success", results.message);
+          openSnackBar(SUCCESS, results.message);
           setIsLogin(true);
         }
       }

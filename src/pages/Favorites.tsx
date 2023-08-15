@@ -14,6 +14,8 @@ const Favorites = () => {
   const user = useSelector((state: RootState) => state.user);
   const [favorites, setFavorites] = useState([]);
 
+  // When clicking the search icon, we search for the products,
+  // update the state and navigate back to the store
   const handleSearch = async (searchTerm: string) => {
     const productsRes = await getProductsApi(searchTerm);
     dispatch(getProducts(productsRes));
@@ -27,6 +29,7 @@ const Favorites = () => {
     }
   };
 
+  // User needs to be authenticated to see this page
   useEffect(() => {
     if (!user) {
       navigate("/");

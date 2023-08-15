@@ -13,6 +13,7 @@ const Navbar: React.FC = () => {
     dispatch(logout());
   };
 
+  // Display navbar depend on the user authentication status
   return (
     <AppBar position="static" style={{ borderRadius: "4px 4px 0px 0px" }}>
       <Toolbar>

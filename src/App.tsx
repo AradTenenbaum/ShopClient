@@ -6,23 +6,6 @@ import LoginRegister from "./pages/LoginRegister";
 import Favorites from "./pages/Favorites";
 
 function App() {
-  // function loadNewData() {
-  //   if (searchTerm.length > 0) {
-  //     axios
-  //       .get(`http://localhost:5000/product/load/?q=${searchTerm}`)
-  //       .then((response) => {
-  //         setMessage(response.data);
-  //         setSeverity("success");
-  //         setOpen(true);
-  //       })
-  //       .catch((error) => {
-  //         setMessage(error.data);
-  //         setSeverity("error");
-  //         setOpen(true);
-  //       });
-  //   }
-  // }
-
   return (
     <Router>
       <div style={styles.bg}>

@@ -9,7 +9,8 @@ export const loginApi = async (username: string, password: string) => {
     });
     return result.data;
   } catch (error: any) {
-    return error.response.data;
+    if (error.response && error.response.data) return error.response.data;
+    return { error: error.message };
   }
 };
 
@@ -21,7 +22,8 @@ export const registerApi = async (username: string, password: string) => {
     });
     return result.data;
   } catch (error: any) {
-    return error.response.data;
+    if (error.response && error.response.data) return error.response.data;
+    return { error: error.message };
   }
 };
 
@@ -40,7 +42,8 @@ export const addFavoriteApi = async (category: string, token: string) => {
     );
     return result.data;
   } catch (error: any) {
-    return error.response.data;
+    if (error.response && error.response.data) return error.response.data;
+    return { error: error.message };
   }
 };
 
@@ -53,6 +56,7 @@ export const getFavoritesApi = async (token: string) => {
     });
     return result.data.favorites;
   } catch (error: any) {
-    return error.response.data;
+    if (error.response && error.response.data) return error.response.data;
+    return { error: error.message };
   }
 };
